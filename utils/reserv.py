@@ -38,29 +38,12 @@ def get_list_column_name(df, column_name):
 # unsupport
 
 
-def merg_chats(chats, info=True):
-    if info:
-        bar = progressbar.ProgressBar()
-        iner_bar = bar(chats)
-    df=pd.DataFrame()
-    if info:
-        for chat in bar(chats):
-            df = pd.concat([df,chat])
-    else:
-        for chat in chats:
-            df = pd.concat([df,chat])
-    return df.reset_index(drop=True)
-
-
-
-def merg_chats_with_window(chats,wind_len=1):
+def merg_chats(chats):
     bar = progressbar.ProgressBar()
-    res_chats= list()
-    chat_len = len(chats)
-    for ind in bar(range(chat_len)):
-        merg_df = merg_chats(chats[ind:wind_len+ind]+chats[:max(ind-chat_len+wind_len,0)], info=False)
-        res_chats.append(merg_df)
-    return res_chats
+    df=pd.DataFrame()
+    for chat in bar(chats):
+        df = pd.concat([df,chat])
+    return df
 
 
 # Insert pauses between dialogs with long delay
@@ -175,14 +158,11 @@ def delete_corp_endings(chats):
     return res_chats
 
 
-def add_start_stop_tags(chats, start_tag_enable = None):
+def add_start_stop_tags(chats):
     bar = progressbar.ProgressBar()
     bar.init()
     res_chats= list()
-    if start_tag_enable:
-        chat_start_tag = " <CHAT_START> "
-    else:
-        chat_start_tag = " "
+    chat_start_tag = " <CHAT_START> "
     chat_stop_tag = " <CHAT_STOP> "
     man_speaker = 'MANAGER'
 
@@ -202,9 +182,6 @@ def add_start_stop_tags(chats, start_tag_enable = None):
 
 
 def delete_one_recplic_chat(chats, dial_filter=0):
-    return delete_small_chat(chats, dial_filter)
-
-def delete_small_chat(chats, dial_filter=0):
     bar = progressbar.ProgressBar()
     bar.init()
     res_chats= list()
@@ -263,7 +240,7 @@ def add_padding_and_indexing(context_chats,answer_chats):
         res_answer_chats.append(answer_dial)
     return res_answer_chats
 
-def add_indexing(context_chats,answer_chats,man_replic_max, drop_begin_man_replic = 1):
+def add_indexing(context_chats,answer_chats,man_replic_max):
     bar = progressbar.ProgressBar()
     bar.init()
     res_answer_chats = list()
@@ -276,13 +253,9 @@ def add_indexing(context_chats,answer_chats,man_replic_max, drop_begin_man_repli
         for answer_ind, row in answer_dial.iterrows():
             current_context_len = 0
             context_ids[answer_ind]=list()
-            drop_begin_man_replic_count = drop_begin_man_replic
             man_replic_count = man_replic_max
             for context_ind in range(answer_ind-1,-1,-1):
                 if (context_dial['SPEAKER'][context_ind]=="MANAGER"):
-                    if drop_begin_man_replic_count > 0:
-                        drop_begin_man_replic_count-=1
-                        continue
                     if man_replic_count > 0:
                         man_replic_count-=1
                     else:
