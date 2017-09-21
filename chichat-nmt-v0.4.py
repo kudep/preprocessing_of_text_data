@@ -172,7 +172,7 @@ def add_index(data_streams):
     context_data = data_streams[len(data_streams)-1]['DATA']
     #Perfom function task
     print_out('add_index: list,list => list')
-    data = add_indexing(context_data,man_data,250)
+    data = add_indexing(context_data,man_data,context_len = 10,man_replic_max = 10, drop_begin_man_replic = 0)
     #Push data into streams
     push_stream_data(data_streams,data,add_index)
 
@@ -187,12 +187,12 @@ print_pipe(functions_pipe)
 
 dataset_dir = '/home/kuznetsov/qa_dialog/preprocessing/data'
 
-tiny_sber_data_csv = path.join(dataset_dir,'dial_tiny.csv')
-# large_sber_data_xlsx = path.join(dataset_dir,'tech_suply.xlsx')
-# input_data=pd.read_excel(large_sber_data_xlsx)
+# tiny_sber_data_csv = path.join(dataset_dir,'dial_tiny.csv')
+large_sber_data_xlsx = path.join(dataset_dir,'tech_suply.xlsx')
+input_data=pd.read_excel(large_sber_data_xlsx)
 
 ####Data download
-input_data=pd.read_csv(tiny_sber_data_csv)
+# input_data=pd.read_csv(tiny_sber_data_csv)
 
 ### Data streams
 data_streams = list()
@@ -201,28 +201,12 @@ push_stream_data(data_streams,input_data,empty_function)
 
 exetutor(data_streams,functions_pipe)
 
+
 # data_streams[10]['DATA'][0]
 # data_streams[11]['DATA'][0]
 # data_streams[11]['DATA'][0]
 
-#
-# df = data_streams[8]['DATA'][0]['TEXT'].iloc[1]
-# import pandas as pd
-# pd.DataFrame.set_value(index, col, value, )[source]
 
-
-# type(data_streams[14]['DATA'])
-# len(data_streams[14]['DATA'][1])
-# data_streams[14]['DATA'][1]
-#
-#
-# len(data_streams)
-#
-# len(data_streams[8]['DATA'])
-# data_streams[8]['DATA'][8000]
-# lens = [len(ind) for ind in str_data]
-# lens.sort()
-# lens[5000]
 def zipper(context_chats, ans_chats):
     return [(con,ans) for con,ans in zip(context_chats,ans_chats)]
 
@@ -235,7 +219,7 @@ full_chats = zipper(data_streams[len(data_streams)-2]['DATA'], data_streams[len(
 
 
 save_dir = path.join(dataset_dir,'nmt')
-# os.mkdir(save_dir)
+os.mkdir(save_dir)
 cor_train = path.join(save_dir,'train.cor')
 man_train = path.join(save_dir,'train.man')
 cor_test = path.join(save_dir,'test.cor')

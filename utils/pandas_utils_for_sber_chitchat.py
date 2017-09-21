@@ -263,7 +263,7 @@ def add_padding_and_indexing(context_chats,answer_chats):
         res_answer_chats.append(answer_dial)
     return res_answer_chats
 
-def add_indexing(context_chats,answer_chats,man_replic_max, drop_begin_man_replic = 1):
+def add_indexing(context_chats,answer_chats,context_len = 10,man_replic_max = 10, drop_begin_man_replic = 0):
     bar = progressbar.ProgressBar()
     bar.init()
     res_answer_chats = list()
