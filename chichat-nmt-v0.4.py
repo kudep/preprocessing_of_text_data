@@ -112,7 +112,7 @@ def small_chat_delete(data_streams):
     data = get_stream_data(data_streams)
     #Perfom function task
     print_out('small_chat_delete: list => list')
-    data = delete_small_chat(data,5)
+    data = delete_small_chat(data,0)
     #Push data into streams
     push_stream_data(data_streams,data,small_chat_delete)
 
@@ -172,7 +172,7 @@ def add_index(data_streams):
     context_data = data_streams[len(data_streams)-1]['DATA']
     #Perfom function task
     print_out('add_index: list,list => list')
-    data = add_indexing(context_data,man_data,context_len = 6,man_replic_max = 2, drop_begin_man_replic = 0)
+    data = add_indexing(context_data,man_data,context_len = 15,man_replic_max = 2, drop_begin_man_replic = 0)
     #Push data into streams
     push_stream_data(data_streams,data,add_index)
 
