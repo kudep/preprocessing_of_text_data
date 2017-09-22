@@ -122,31 +122,31 @@ functions_pipe.append(small_chat_delete)
 # 130 длина последовательности при которой сохраняется более 0,9% диалогов менеджера
 
 
-### add_start_and_stop_tags: list => list
-def add_start_and_stop_tags(data_streams):
-    data = get_stream_data(data_streams)
-    #Perfom function task
-    print_out('add_start_and_stop_tags: list => list')
-    data = add_start_stop_tags(data)
-    #Push data into streams
-    push_stream_data(data_streams,data,add_start_and_stop_tags)
+# ### add_start_and_stop_tags: list => list
+# def add_start_and_stop_tags(data_streams):
+#     data = get_stream_data(data_streams)
+#     #Perfom function task
+#     print_out('add_start_and_stop_tags: list => list')
+#     data = add_start_stop_tags(data)
+#     #Push data into streams
+#     push_stream_data(data_streams,data,add_start_and_stop_tags)
+#
+# functions_pipe.append(add_start_and_stop_tags)
+#
+#
+# functions_pipe.append(sentence_concat)
 
-functions_pipe.append(add_start_and_stop_tags)
 
-
-functions_pipe.append(sentence_concat)
-
-
-### merg_chats: list => list
-def merg_chats(data_streams):
-    data = get_stream_data(data_streams)
-    #Perfom function task
-    print_out('merg_chats: list => list')
-    data = merg_chats_with_window(data,2)
-    #Push data into streams
-    push_stream_data(data_streams,data,merg_chats)
-
-functions_pipe.append(merg_chats)
+# ### merg_chats: list => list
+# def merg_chats(data_streams):
+#     data = get_stream_data(data_streams)
+#     #Perfom function task
+#     print_out('merg_chats: list => list')
+#     data = merg_chats_with_window(data,2)
+#     #Push data into streams
+#     push_stream_data(data_streams,data,merg_chats)
+#
+# functions_pipe.append(merg_chats)
 
 
 ### add_serv_tag: list => list
@@ -166,13 +166,13 @@ functions_pipe.append(sentence_concat)
 
 ### add_index: list,list => list  input man_replic_max
 def add_index(data_streams):
-    assert (data_streams[len(data_streams)-3]['FUNCTION'] is merg_chats)
+    assert (data_streams[len(data_streams)-3]['FUNCTION'] is small_chat_delete)
     assert (data_streams[len(data_streams)-1]['FUNCTION'] is sentence_concat)
     man_data = data_streams[len(data_streams)-3]['DATA']
     context_data = data_streams[len(data_streams)-1]['DATA']
     #Perfom function task
     print_out('add_index: list,list => list')
-    data = add_indexing(context_data,man_data,context_len = 10,man_replic_max = 10, drop_begin_man_replic = 0)
+    data = add_indexing(context_data,man_data,context_len = 6,man_replic_max = 2, drop_begin_man_replic = 0)
     #Push data into streams
     push_stream_data(data_streams,data,add_index)
 
